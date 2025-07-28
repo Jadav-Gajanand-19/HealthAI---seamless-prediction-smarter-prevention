@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heart Disease Prediction</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- AOS Animation -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --bg-light: linear-gradient(to right, #e0ffe7, #f1faff);
+      --card-bg: rgba(255, 255, 255, 0.8);
+      --text-color: #1a1a1a;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .dark-mode {
+      background: #121212 !important;
+      color: #f0f0f0;
+    }
+
+    .container {
+      max-width: 900px;
+      padding: 60px 20px;
+    }
+
+    .form-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      transition: transform 0.3s;
+    }
+
+    .form-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .dark-mode .form-card {
+      background: rgba(33, 33, 33, 0.9);
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .form-control {
+      background-color: #f7f7f7;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .dark-mode .form-control {
+      background-color: #2a2a2a;
+      color: white;
+      border: none;
+    }
+
+    .submit-btn {
+      background-color: var(--primary);
+      color: white;
+      font-weight: bold;
+      padding: 12px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      width: 100%;
+      transition: background 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #1b5e20;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #fff;
+      color: #121212;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+    }
+
+    .dark-mode .theme-toggle {
+      background: #333;
+      color: #f1f1f1;
+    }
+
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🌙 Dark mode toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()">
+    🌙
+  </button>
+
+  <div class="container">
+    <div class="form-card" data-aos="zoom-in">
+      <h2><i class="fas fa-heart-pulse"></i> Heart Disease Prediction</h2>
+      <form id="heartPredictionForm" method="POST" action="{{ url_for('heart_prediction') }}">
+        <div class="row g-3">
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Age</label><input type="number" class="form-control" name="age" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Sex (1 = Male, 0 = Female)</label><input type="number" class="form-control" name="sex" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Chest Pain Type (0–3)</label><input type="number" class="form-control" name="cp" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Resting Blood Pressure</label><input type="number" class="form-control" name="trestbps" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Cholesterol</label><input type="number" class="form-control" name="chol" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Fasting Blood Sugar &gt; 120 (1=Yes, 0=No)</label><input type="number" class="form-control" name="fbs" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Rest ECG (0–2)</label><input type="number" class="form-control" name="restecg" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Max Heart Rate</label><input type="number" class="form-control" name="thalach" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Exercise Induced Angina (1=Yes, 0=No)</label><input type="number" class="form-control" name="exang" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Oldpeak</label><input type="number" step="any" class="form-control" name="oldpeak" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">ST Slope (0–2)</label><input type="number" class="form-control" name="slope" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Major Vessels (0–3)</label><input type="number" class="form-control" name="ca" required /></div>
+          <div class="col-md-6" data-aos="fade-up"><label class="form-label">Thal (1=Normal, 2=Fixed, 3=Reversible)</label><input type="number" class="form-control" name="thal" required /></div>
+        </div>
+
+        <div class="mt-4" data-aos="fade-up">
+          <button type="submit" class="submit-btn">
+            <i class="fas fa-heart-pulse"></i> Predict Risk
+          </button>
+        </div>
+      </form>
+    </div>
+</div>
+  </div>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>

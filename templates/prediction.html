@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prediction Tools - HealthAI</title>
+
+  <!-- Font Awesome + AOS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #e0f7fa, #e1f5fe);
+      color: #222;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    body.dark-mode {
+      background: #121212;
+      color: #eee;
+    }
+
+    header {
+      background: linear-gradient(to right, #0f9b8e, #4ca1af);
+      color: white;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(20deg);
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .greeting {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #0f7777;
+    }
+
+    .greeting h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: #0d6969;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      color: #003333;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.05);
+      box-shadow: 0 12px 24px rgba(0, 128, 128, 0.3);
+    }
+
+    .card i {
+      font-size: 2.5rem;
+      margin-bottom: 0.8rem;
+      color: #0f9b8e;
+      animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #0f9b8e;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #eef6f8;
+      font-size: 0.9rem;
+      margin-top: 2rem;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🧠 HealthAI</div>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+</header>
+
+<div class="container">
+  <div class="greeting" data-aos="fade-down">
+    
+    <p>Select a prediction tool to assess your health risks intelligently.</p>
+  </div>
+
+  <h2 class="section-title" data-aos="fade-up">🧪 Choose a Prediction Tool</h2>
+
+  <div class="card-grid">
+    <div class="card" data-aos="zoom-in" data-aos-offset="200">
+      <i class="fa-solid fa-syringe"></i>
+      <h3>Diabetes Prediction</h3>
+      <p>Predict your risk of diabetes with clinical indicators.</p>
+      <a href="{{ url_for('diabetes_home') }}">Try Now →</a>
+    </div>
+
+    <div class="card" data-aos="flip-left" data-aos-offset="250">
+      <i class="fa-solid fa-heart-pulse"></i>
+      <h3>Heart Disease</h3>
+      <p>Analyze cardiovascular indicators for heart health.</p>
+      <a href="{{url_for('heart_home')}}">Try Now →</a>
+    </div>
+
+    <div class="card" data-aos="fade-up" data-aos-offset="250">
+      <i class="fa-solid fa-notes-medical"></i>
+      <h3>Overall Risk</h3>
+      <p>Estimate combined chronic risk using AI.</p>
+      <a href="{{url_for('multi_disease')}}">Try Now →</a>
+    </div>
+  </div>
+</div>
+
+<footer data-aos="fade-up">
+  <p>© 2025 HealthAI — ML-Driven Healthcare Companion</p>
+</footer>
+
+<!-- AOS Script -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800,
+    once: false,
+    offset: 100,
+  });
+
+  // Greeting logic
+  window.onload = () => {
+    const username = localStorage.getItem('username') || 'Guest';
+    document.getElementById('greet-user').textContent = `Welcome back, ${username} 👋`;
+  };
+
+  function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+  }
+</script>
+
+</body>
+</html>

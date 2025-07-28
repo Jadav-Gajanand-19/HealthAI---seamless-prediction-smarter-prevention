@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Diabetes Risk Result</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- AOS Animation -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primary: #00796b;
+      --bg-light: linear-gradient(to right, #e0f7fa, #f1faff);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --text-color: #1a1a1a;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-color);
+    }
+
+    .dark-mode {
+      background: #121212 !important;
+      color: #f0f0f0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin-top: 80px;
+      padding: 20px;
+    }
+
+    .result-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-mode .result-card {
+      background: rgba(33, 33, 33, 0.95);
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    .risk-score {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #d32f2f;
+    }
+
+    .result-text {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .btn-back {
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+
+    .btn-back:hover {
+      background: #004d40;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #fff;
+      color: #121212;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+    }
+
+    .dark-mode .theme-toggle {
+      background: #333;
+      color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <!-- 🌙 Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+  <div class="container">
+    <div class="result-card" data-aos="zoom-in">
+      <h2><i class="fas fa-syringe"></i> Diabetes Prediction Result</h2>
+      <div class="risk-score">{{ risk }}%</div>
+      <div class="result-text">{{ result }}</div>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-back mt-3">
+        ← Back to Home
+      </a>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>

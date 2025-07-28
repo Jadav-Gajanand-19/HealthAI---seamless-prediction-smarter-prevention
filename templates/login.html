@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login & Signup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+    }
+    .left-section {
+    flex: 1;
+    background: url("{{ url_for('static', filename='images/login_img.png') }}") no-repeat center center/cover;
+    }
+    .right-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e0f7f4, #c0f7e8, #a4f5cf);
+    }
+    .container {
+      width: 360px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+      padding: 40px 30px;
+      animation: fadeIn 0.8s ease;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .container:hover {
+      transform: scale(1.03);
+      box-shadow: 0 16px 50px rgba(0, 255, 200, 0.5);
+    }
+    h2 {
+      color: #00332d;
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .input-group:hover {
+      transform: scale(1.03);
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid transparent;
+      outline: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #00332d;
+      font-size: 16px;
+      transition: 0.3s ease;
+    }
+    .input-group input:focus {
+      border-color: #00e6c3;
+      box-shadow: 0 0 10px #00e6c3;
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .input-group label {
+      position: absolute;
+      left: 20px;
+      top: 12px;
+      color: #555;
+      font-size: 14px;
+      pointer-events: none;
+      transition: 0.3s ease;
+    }
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 12px;
+      font-size: 12px;
+      color: #00bfa5;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0 5px;
+      border-radius: 5px;
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #00e6c3;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 16px;
+      color: #00332d;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background: #00c2a4;
+    }
+    .toggle-link {
+      text-align: center;
+      margin-top: 15px;
+      color: #00796b;
+      cursor: pointer;
+      font-size: 14px;
+      text-decoration: underline;
+    }
+    .error {
+      color: #ff4d4d;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 10px;
+    }
+    @keyframes fadeIn {
+      from {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    #signupForm {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Left image section -->
+  <div class="left-section"></div>
+
+  <!-- Right form section -->
+  <div class="right-section">
+    <div class="container">
+      <!-- Login Form -->
+      <form id="loginForm" method="POST" action="/login">
+        <h2>Login</h2>
+        <div class="input-group">
+          <input type="text" id="loginUsername" name="username" required placeholder=" " />
+          <label for="loginUsername">Username / Email</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="loginPassword" name="password" required placeholder=" " />
+          <label for="loginPassword">Password</label>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}<div class="error">{{ messages[0] }}</div>{% endif %}
+        {% endwith %}
+        <div class="toggle-link" onclick="showSignup()">Create New Account : Signup</div>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="signupForm" method="POST" action="/signup">
+        <h2>Create Account</h2>
+        <div class="input-group">
+          <input type="text" id="signupUsername" name="username" required placeholder=" " />
+          <label for="signupUsername">Username / Email</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="signupPassword" name="password" required placeholder=" " />
+          <label for="signupPassword">New Password</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="confirmPassword" required placeholder=" " />
+          <label for="confirmPassword">Confirm Password</label>
+        </div>
+        <button type="submit" class="btn">Sign Up</button>
+        <div class="error" id="signupError"></div>
+        <div class="toggle-link" onclick="showLogin()">Back to Login</div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function showSignup() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('signupForm').style.display = 'block';
+    }
+
+    function showLogin() {
+      document.getElementById('signupForm').style.display = 'none';
+      document.getElementById('loginForm').style.display = 'block';
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', function (e) {
+      const pw = document.getElementById('signupPassword').value.trim();
+      const confirm = document.getElementById('confirmPassword').value.trim();
+      if (pw !== confirm) {
+        e.preventDefault();
+        document.getElementById('signupError').textContent = 'Passwords do not match!';
+      }
+    });
+  </script>
+
+</body>
+</html>

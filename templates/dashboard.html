@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HealthAI Dashboard</title>
+
+  <!-- Font Awesome + AOS (Animations) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --gradient-bg: linear-gradient(to right, #0f9b8e, #4ca1af);
+      --card-bg: rgba(255, 255, 255, 0.15);
+      --glass-blur: blur(10px);
+      --text-light: #f0f8ff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #e0f7fa, #e1f5fe);
+      color: #222;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    header {
+      background: var(--gradient-bg);
+      color: white;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .greeting {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #0f7777;
+    }
+
+    .greeting h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+#chat-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: #0f9b8e;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 10px 18px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+#chat-container {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  height: 500px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: none;
+  flex-direction: column;
+  font-size: 14px;
+  z-index: 999;
+}
+
+#chat-header {
+  background: #0f9b8e;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#chat-log {
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  border-bottom: 1px solid #ddd;
+}
+
+.chat-msg {
+  margin: 5px 0;
+}
+
+.user-msg {
+  text-align: right;
+  color: #333;
+}
+
+.bot-msg {
+  text-align: left;
+  color: #0f9b8e;
+}
+
+#question-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.question-btn {
+  background: #e0f7fa;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #0f7777;
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.question-btn:hover {
+  background: #d0efef;
+}
+
+.section-label {
+  font-weight: bold;
+  color: #0f9b8e;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+    .tip-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.tip-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  width: 260px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tip-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 128, 128, 0.2);
+}
+
+.tip-card i {
+  font-size: 2rem;
+  color: #0f9b8e;
+  margin-bottom: 0.5rem;
+}
+
+.tip-card p {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+body.dark-mode .tip-card {
+  background: rgba(30, 30, 30, 0.6);
+  color: #f0f0f0;
+}
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: var(--glass-blur);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      color: #003333;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      transition: all 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 12px 24px rgba(0, 128, 128, 0.3);
+    }
+
+    .card i {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+      color: #0f9b8e;
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #0f9b8e;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: #0d6969;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .tips ul {
+      list-style-type: circle;
+      padding-left: 1.5rem;
+    }
+
+    .tips li {
+      margin: 0.5rem 0;
+    }
+
+    canvas {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 15px;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #eef6f8;
+      font-size: 0.9rem;
+      margin-top: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    body.dark-mode {
+      background: #121212;
+      color: #eee;
+    }
+    body.dark-mode header {
+      background: #0d4b4b;
+    }
+    body.dark-mode .card,
+    body.dark-mode canvas {
+      background: rgba(30, 30, 30, 0.6);
+      color: #eee;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🧠 HealthAI</div>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+</header>
+
+<div class="container">
+
+  <!-- Greeting -->
+  <div class="greeting" data-aos="fade-down">
+    <h1 id="greet-user">Welcome back 👋</h1>
+    <p>Your health is your superpower 💚</p>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="card-grid">
+    <div class="card" data-aos="zoom-in">
+      <i class="fa-solid fa-heart-pulse"></i>
+      <h3>Health Score</h3>
+      <p>85/100</p>
+    </div>
+    <div class="card" data-aos="zoom-in" data-aos-delay="100">
+      <i class="fa-solid fa-notes-medical"></i>
+      <h3>Last Prediction</h3>
+      <p>Low Risk ✅</p>
+    </div>
+    <div class="card" data-aos="zoom-in" data-aos-delay="200">
+      <i class="fa-solid fa-glass-water"></i>
+      <h3>Water Intake</h3>
+      <p>1.8 L</p>
+    </div>
+    <div class="card" data-aos="zoom-in" data-aos-delay="300">
+      <i class="fa-solid fa-file-medical"></i>
+      <h3>Reports</h3>
+      <p>3</p>
+    </div>
+  </div>
+
+  <!-- Chart Section -->
+  <div>
+    <h2 class="section-title" data-aos="fade-up">📈 Weekly Water Intake</h2>
+    <canvas id="healthChart" height="100" data-aos="zoom-in-up"></canvas>
+  </div>
+
+  <!-- Actions -->
+  <div>
+    <h2 class="section-title" data-aos="fade-up">🔍 Quick Actions</h2>
+    <div class="card-grid">
+      <div class="card" onclick="location.href='prediction'" data-aos="flip-left">
+        <i class="fa-solid fa-dna"></i>
+        <h3>Make a Prediction</h3>
+        <p>Check your disease risk</p>
+        <a href="{{url_for('predict_selection')}}">Go →</a>
+      </div>
+      <div class="card" onclick="location.href='habits.html'" data-aos="flip-right">
+        <i class="fa-solid fa-seedling"></i>
+        <h3>Healthy Habits</h3>
+        <p>Tips to stay fit</p>
+        <a href="{{url_for('healthy_habits')}}">Explore →</a>
+    </div>
+
+    </div>
+  </div>
+
+<!-- Health Tips -->
+<div class="tips" data-aos="fade-up">
+  <h2 class="section-title">💡 Daily Health Tips</h2>
+  <div class="tip-cards">
+    <div class="tip-card" data-aos="zoom-in">
+      <i class="fa-solid fa-leaf"></i>
+      <p><strong>Eat Greens</strong><br>🥦 Include leafy vegetables in your meals daily.</p>
+    </div>
+    <div class="tip-card" data-aos="zoom-in" data-aos-delay="100">
+      <i class="fa-solid fa-glass-water"></i>
+      <p><strong>Stay Hydrated</strong><br>💧 Drink at least 2L of water every day.</p>
+    </div>
+    <div class="tip-card" data-aos="zoom-in" data-aos-delay="200">
+      <i class="fa-solid fa-person-running"></i>
+      <p><strong>Stay Active</strong><br>🏃 Exercise 30 mins daily to boost immunity.</p>
+    </div>
+  </div>
+</div>
+
+
+<footer>
+  <p>© 2025 HealthAI | Built for Hackathon</p>
+</footer>
+<!-- 👇 CHATBOT START -->
+<!-- Toggle Button -->
+<button id="chat-toggle" onclick="toggleChat()">💬</button>
+
+<!-- Chatbot Container -->
+<div id="chat-container">
+  <div id="chat-header">💬 Ask HealthAI</div>
+  <div id="chat-log">
+    <div class="bot-msg">Hi 👋! I'm your HealthAI assistant. Choose a question below:</div>
+  </div>
+  <div id="question-scroll"></div>
+</div>
+<!-- 📈 CHATBOT END -->
+
+<!-- Scripts -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+
+  // Chart.js
+  const ctx = document.getElementById('healthChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Water Intake (L)',
+        data: [1.5, 2, 1.8, 2.1, 2, 1.9, 2.3],
+        borderColor: '#0f9b8e',
+        tension: 0.4,
+        fill: false,
+        pointBackgroundColor: '#0f9b8e',
+        pointRadius: 5
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Dark mode toggle
+  function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+  }
+
+  // Greet user
+  window.onload = function () {
+    const username = localStorage.getItem('username') || 'Guest';
+    document.getElementById('greet-user').textContent = `Welcome back, ${username} 👋`;
+  };
+
+  let chatVisible = false;
+
+  function toggleChat() {
+    const chat = document.getElementById('chat-container');
+    const toggleBtn = document.getElementById('chat-toggle');
+    chatVisible = !chatVisible;
+    chat.style.display = chatVisible ? 'flex' : 'none';
+    toggleBtn.textContent = chatVisible ? '🔼' : '💬';
+  }
+
+  const groupedQA = [
+    {
+      label: "🦥 Diabetes",
+      items: [
+        { question: "What is diabetes?", answer: "Diabetes is a chronic condition where your blood sugar is too high. It's caused by problems with insulin and is managed through lifestyle, diet, and medication." },
+        { question: "How to prevent diabetes?", answer: "Prevent diabetes with a balanced diet, regular exercise, healthy weight, and cutting down on sugar." }
+      ]
+    },
+    {
+      label: "❤️ Heart Disease",
+      items: [
+        { question: "What is heart disease?", answer: "Heart disease refers to conditions like blocked arteries or irregular heartbeat. It's often caused by high blood pressure, cholesterol, or lifestyle habits." },
+        { question: "Tell me about heart attack", answer: "A heart attack occurs when blood flow to a part of the heart is blocked. Prevention includes exercise, avoiding smoking, and a healthy diet." },
+        { question: "What are healthy habits?", answer: "Healthy habits include a balanced diet, daily exercise, 7–8 hours of sleep, and regular health checkups." }
+      ]
+    },
+    {
+      label: "🤖 AI & Prediction",
+      items: [
+        { question: "What is prediction?", answer: "Predictions help you understand your risk of diseases using your health data and AI models." },
+        { question: "How do you predict?", answer: "We use machine learning models trained on health data to analyze inputs like age, BMI, and habits to predict risks." },
+        { question: "What tools do you use?", answer: "We use tools like logistic regression and decision trees in Python to build AI models for predicting diabetes, heart disease, and more." },
+        { question: "How to check health risk?", answer: "🧪 You can try the prediction tools in the dashboard to check your health risk. Go to the 'Prediction' section." }
+      ]
+    },
+    {
+      label: "📊 Reports",
+      items: [
+        { question: "Where can I see my report?", answer: "📊 You can view your health reports in the dashboard under the 'Reports' section." }
+      ]
+    }
+  ];
+
+  function createQuestionButtons() {
+    const container = document.getElementById("question-scroll");
+    container.innerHTML = "";
+
+    groupedQA.forEach(section => {
+      const label = document.createElement("div");
+      label.className = "section-label";
+      label.textContent = section.label;
+      container.appendChild(label);
+
+      section.items.forEach(item => {
+        const btn = document.createElement("button");
+        btn.className = "question-btn";
+        btn.textContent = item.question;
+        btn.onclick = () => handleQuestion(item.question, item.answer);
+        container.appendChild(btn);
+      });
+    });
+  }
+
+  function handleQuestion(question, answer) {
+    appendMessage("user", question);
+    setTimeout(() => appendMessage("bot", answer), 500);
+  }
+
+  function appendMessage(sender, msg) {
+    const chatLog = document.getElementById("chat-log");
+    const div = document.createElement("div");
+    div.className = "chat-msg " + (sender === "user" ? "user-msg" : "bot-msg");
+    div.textContent = msg;
+    chatLog.appendChild(div);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+
+  window.addEventListener("DOMContentLoaded", createQuestionButtons);
+</script>
+
+</body>
+</html>

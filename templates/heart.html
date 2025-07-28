@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heart Disease Prediction Info</title>
+
+  <!-- Bootstrap & Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- AOS Animation -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --light-bg: linear-gradient(to right, #e0ffe7, #f1faff);
+      --dark-bg: #121212;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: var(--light-bg);
+      color: #333;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    .dark-mode {
+      background: var(--dark-bg);
+      color: #e0e0e0;
+    }
+
+    .container-box {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .dark-mode .container-box {
+      background: rgba(30, 30, 30, 0.9);
+    }
+
+    .container-box:hover {
+      transform: translateY(-6px);
+    }
+
+    h1.title {
+      text-align: center;
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    p, ul {
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    ul li {
+      margin-bottom: 6px;
+    }
+
+    ul li::marker {
+      color: #66bb6a;
+    }
+
+    .start-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 30px auto 0;
+      padding: 12px 24px;
+      background-color: var(--primary);
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.4);
+      transition: all 0.3s ease;
+      width: 80%;
+      max-width: 300px;
+    }
+
+    .start-btn:hover {
+      background-color: #256429;
+      transform: scale(1.05);
+    }
+
+    .dark-mode .start-btn {
+      background-color: #66bb6a;
+      color: black;
+    }
+
+    .toggle-mode {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--primary);
+    }
+
+    .dark-mode .toggle-mode {
+      color: #a5d6a7;
+    }
+
+    @media (max-width: 600px) {
+      h1.title { font-size: 1.6rem; }
+      h2 { font-size: 1.2rem; }
+      .start-btn { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Dark mode toggle -->
+  <button class="toggle-mode" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+
+  <div class="container-box" data-aos="zoom-in">
+    <h1 class="title"><i class="fas fa-heartbeat"></i> Heart Disease Risk Prediction</h1>
+
+    <p data-aos="fade-up" data-aos-delay="100">
+      Heart disease is a leading global cause of death. This tool helps assess your risk using machine learning, giving you the chance to take preventive action early.
+    </p>
+
+    <h2 data-aos="fade-right" data-aos-delay="150"><i class="fas fa-bolt"></i> Why We Ask These Inputs</h2>
+    <ul data-aos="fade-left" data-aos-delay="200">
+      <li><strong>Age</strong>: Risk increases as you get older.</li>
+      <li><strong>Sex</strong>: Gender can impact risk levels.</li>
+      <li><strong>cp</strong> (Chest Pain): Indicates heart stress levels.</li>
+      <li><strong>trestbps</strong>: High blood pressure = heart strain.</li>
+      <li><strong>chol</strong>: High cholesterol = clogged arteries.</li>
+      <li><strong>fbs</strong>: High blood sugar may indicate diabetes.</li>
+      <li><strong>restecg</strong>: Detects electrical heart abnormalities.</li>
+      <li><strong>thalach</strong>: Max heart rate from activity.</li>
+      <li><strong>exang</strong>: Chest pain during exercise.</li>
+      <li><strong>oldpeak</strong>: ST depression during stress.</li>
+      <li><strong>slope</strong>: Measures stress test results.</li>
+      <li><strong>ca</strong>: Number of colored vessels via imaging.</li>
+      <li><strong>thal</strong>: Blood disorder affecting oxygen.</li>
+    </ul>
+
+    <h2 data-aos="fade-right" data-aos-delay="250"><i class="fas fa-heart"></i> How It Works</h2>
+    <p data-aos="fade-up" data-aos-delay="300">
+      We use AI models trained on real health data to generate a personalized risk score. It’s fast, secure, and informative — helping you take early action.
+    </p>
+
+    <h2 data-aos="fade-right" data-aos-delay="350"><i class="fas fa-hand-holding-medical"></i> Why Early Prediction Matters</h2>
+    <p data-aos="fade-up" data-aos-delay="400">
+      Many heart conditions are preventable if detected early. Use this tool to catch early signs and stay ahead with lifestyle changes or medical guidance.
+    </p>
+
+    <a href="{{url_for ('heart_prediction')}}" class="start-btn" >
+      <i class="fas fa-stethoscope"></i> Start Risk Check
+    </a>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Diabetes Prediction - HealthAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <!-- Font Awesome + AOS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0ffe7, #f1faff);
+      color: #222;
+      transition: background 0.4s ease, color 0.4s ease;
+    }
+
+    body.dark-mode {
+      background: #121212;
+      color: #f0f0f0;
+    }
+
+    header {
+      background-color: #2e7d32;
+      color: white;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      animation: slideTop 1s ease;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .theme-toggle {
+      font-size: 1.4rem;
+      border: none;
+      background: transparent;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(20deg);
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      transition: 0.3s ease;
+      animation: fadeInUp 1s ease;
+    }
+
+    body.dark-mode .container {
+      background: rgba(30, 30, 30, 0.7);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2e7d32;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    body.dark-mode h1 {
+      color: #a5d6a7;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.3s;
+    }
+
+    input:focus {
+      border-color: #2e7d32;
+      outline: none;
+    }
+
+    body.dark-mode input {
+      background-color: #1f1f1f;
+      border: 1px solid #555;
+      color: #eee;
+    }
+
+    .submit-btn {
+      margin-top: 1.5rem;
+      background: #2e7d32;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: #256d27;
+      transform: scale(1.03);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      background: #e8f5e9;
+      margin-top: 2rem;
+      animation: fadeInUp 1s ease;
+    }
+
+    body.dark-mode footer {
+      background: #1b1b1b;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideTop {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .container {
+        margin: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">💉 Diabetes Prediction</div>
+  <button class="theme-toggle" onclick="document.body.classList.toggle('dark-mode')">🌓</button>
+</header>
+
+<!-- Form Container -->
+<div class="container" data-aos="fade-up">
+  <h1><i class="fa-solid fa-syringe"></i> Enter Health Details</h1>
+  <form method="POST" action="{{ url_for('diabetes_prediction') }}">
+    <div class="form-group"><label>Pregnancies</label><input type="number" name="pregnancies" required /></div>
+    <div class="form-group"><label>Glucose</label><input type="number" name="glucose" required /></div>
+    <div class="form-group"><label>Blood Pressure</label><input type="number" name="bp" required /></div>
+    <div class="form-group"><label>Skin Thickness</label><input type="number" name="skin" required /></div>
+    <div class="form-group"><label>Insulin</label><input type="number" name="insulin" required /></div>
+    <div class="form-group"><label>BMI</label><input type="number" step="0.1" name="bmi" required /></div>
+    <div class="form-group"><label>Diabetes Pedigree Function</label><input type="number" step="0.01" name="dpf" required /></div>
+    <div class="form-group"><label>Age</label><input type="number" name="age" required /></div>
+
+    <button type="submit" class="submit-btn">Start Prediction</button>
+  </form>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>© 2025 HealthAI — Smart Diagnosis Made Simple</p>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({ duration: 800, once: true });</script>
+
+</body>
+</html>
