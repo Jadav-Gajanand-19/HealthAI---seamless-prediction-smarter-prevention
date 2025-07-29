@@ -14,9 +14,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 # Load ML models
-diabetes_model = pickle.load(open(r'D:\Projects - the distinction factor\Hackathon\ML Models\diabetes_model.pkl', 'rb'))
-heart_model = pickle.load(open(r'D:\Projects - the distinction factor\Hackathon\ML Models\heart_disease_model.pkl','rb'))
-diseases_model = pickle.load(open(r'D:\Projects - the distinction factor\Hackathon\ML Models\diseases_model.pkl','rb'))
+diabetes_model = pickle.load(open(r'D:\Projects - the distinction factor\HealthAI\ML Models\diabetes_model.pkl', 'rb'))
+heart_model = pickle.load(open(r'D:\Projects - the distinction factor\HealthAI\ML Models\heart_disease_model.pkl','rb'))
+diseases_model = pickle.load(open(r'D:\Projects - the distinction factor\HealthAI\ML Models\diseases_model.pkl','rb'))
 
 # Login manager
 login_manager = LoginManager()
