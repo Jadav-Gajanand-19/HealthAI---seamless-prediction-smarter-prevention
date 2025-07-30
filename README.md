@@ -4,7 +4,7 @@
 AI-powered web application for early detection of chronic disease risks using personalized health data.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Jadav-Gajanand-19/HealthAI---seamless-prediction-smarter-prevention/main/logo.png" alt="HealthAI Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/Jadav-Gajanand-19/HealthAI---seamless-prediction-smarter-prevention/main/logo.jpg" alt="HealthAI Logo" width="200"/>
 </p>
 
 🔗 GitHub Repository: [HealthAI---seamless-prediction-smarter-prevention](https://github.com/Jadav-Gajanand-19/HealthAI---seamless-prediction-smarter-prevention)
