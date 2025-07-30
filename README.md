@@ -3,6 +3,7 @@
 **Seamless Prediction, Smarter Prevention**  
 AI-powered web application for early detection of chronic disease risks using personalized health data.
 
+Link to the website : https://healthai-smart-83d2096f7650.herokuapp.com/
 <p align="center">
   <img src="https://raw.githubusercontent.com/Jadav-Gajanand-19/HealthAI---seamless-prediction-smarter-prevention/main/logo.jpg" alt="HealthAI Logo" width="200"/>
 </p>
