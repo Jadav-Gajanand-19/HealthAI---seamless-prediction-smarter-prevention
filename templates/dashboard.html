@@ -291,8 +291,18 @@ body.dark-mode .tip-card {
 
 <header>
   <div class="logo">🧠 HealthAI</div>
-  <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+  <div style="display: flex; gap: 1rem; align-items: center;">
+    <a href="{{ url_for('track_progress') }}"
+    target="_blank"
+   class="your-button-class-here"
+   style="background: white; color: #0f9b8e; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.2);"
+   >
+   Track Your Progress
+  </a>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+  </div>
 </header>
+
 
 <div class="container">
 
