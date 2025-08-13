@@ -204,7 +204,7 @@ def healthy_habits():
 @app.route('/track-progress')
 @login_required
 def track_progress():
-    return redirect("https://eklvya-warrior-path-9b7b315e6f82.herokuapp.com/")
+    return redirect("https://eklvya-the-warriors-path.onrender.com/")
 
 if __name__ == '__main__':
     with app.app_context():
